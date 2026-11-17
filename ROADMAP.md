@@ -1,28 +1,41 @@
 # Roadmap
 
-## 1. Source-level "loop only, no transitions" build
+## 1. Source-level "loop only" build — done
 
-The backdrop is supposed to show one continuous loop of the login scene: no intro, no scene cuts,
-no transitions. The shipped `public/genshin-bg/` already behaves that way, but it came from a
-modified build whose source edits were not kept (see `NOTICE.md`), so the behaviour is not
-reproducible from this repository yet.
+`patches/0001-loop-only.patch` turns the upstream app into the wallpaper this plugin ships, and
+`scripts/build-scene.mjs` reproduces `public/genshin-bg/` from `upstream/` + that patch.
 
-To close it:
+What the patch removes:
 
-1. Branch from the fork (<https://github.com/takomitkm/www-genshin>) at the pinned commit.
-2. Strip the intro/transition path in the scene source — the relevant files are
-   `src/core/components/BloomTransition.ts`, `src/core/states/StateMachine.ts`,
-   `src/pages/Preloader.tsx`, and the menu mount in `src/main.tsx` / `src/App.tsx`.
-3. Keep only the camera/scene loop, with `LoopRepeat` on the animation action.
-4. Export the diff as `patches/0001-loop-only.patch` so `scripts/build-scene.mjs` reproduces it.
-5. Rebuild, then verify inside DSH: one uninterrupted loop, no transition frames.
+| Removed | Where |
+| --- | --- |
+| Menu and preloader UI | `src/App.tsx` (renders only `Canvas`) |
+| Click handling on the canvas | `src/pages/Canvas.tsx` |
+| Door stop, door animation, white-plane backdrop | `src/core/components/Road.ts` |
+| Camera stop and door rush | `src/core/components/ForwardCamera.ts` |
+| Bloom flash transition | `src/core/Game.ts` (plugin no longer added) |
+| Audio components and mp3 preloads | `src/core/Game.ts` |
+| `restart()` redirect to an external video | `src/core/GameManager.ts` |
+| Demo title/favicon/description | `index.html` |
 
-That same branch is the pull-request candidate for upstream: it touches only upstream's own files.
+What remains is the loop: the camera flies forward forever, and the road, clouds and columns
+recycle around it (`Cloud`, `Column`, `BigColumn` key off `cameraCenter.z` and `zLength`), so the
+scene never runs out and never stops.
+
+Verified on a DSH desktop instance: entry chunk, DRACO decoder, road model and textures all load
+(79 requests, 0 failures) and the WebGL canvas initialises at the window size. Motion cannot be
+observed over CDP while the window is occluded — Chromium pauses `requestAnimationFrame` for a
+hidden window, which is expected behaviour, not a scene fault.
 
 ## 2. Upstream pull request
 
-Once step 1 exists as a clean branch limited to `src/**`, open a PR against
-gamemcu/www-genshin describing the change (loop-only mode). The DSH halves stay out of it.
+The same change, limited to `src/**` plus `index.html`, is a reasonable upstream proposal: it adds
+a "no UI, loop forever" mode to the demo. It is prepared on a branch in the fork
+(<https://github.com/takomitkm/www-genshin>) so the diff stays inside upstream's own files.
+
+Note when proposing it: upstream's `npm run build` fails at `tsc` in this snapshot
+(`src/core/components/ShaderTest.ts` imports a module that does not exist), so `vite build` is run
+directly.
 
 ## 3. Hash-independent shell selectors
 

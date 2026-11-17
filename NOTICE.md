@@ -22,15 +22,14 @@
 
 ## Note on the shipped scene bundle
 
-`public/genshin-bg/` in this repository was produced by a **modified** build of the upstream
-project whose source edits were not preserved: compared with `upstream/index.html`, the shipped
-`index.html` has a different title, no `<div id="root">`, and relative asset URLs. Those edits are
-not recoverable from the bundle, so the shipped output cannot yet be reproduced by
-`scripts/build-scene.mjs`.
+`public/genshin-bg/` is built from `upstream/` by `scripts/build-scene.mjs`, with
+`patches/0001-loop-only.patch` applied. The patch strips the demo's menu, preloader, door sequence,
+bloom transition, audio and the redirect to an external video, leaving the loop this wallpaper
+shows. Rebuilding is deterministic: the same inputs produce the same hashed asset names.
 
-Rebuilding from `upstream/` as it stands reproduces upstream's own app (menu, preloader, intro
-transitions), not the stripped loop-only backdrop. Closing that gap — a source-level "loop only,
-no transitions" build that reproduces the shipped behaviour — is tracked in `ROADMAP.md`.
+Two prunings happen after the build, both reflected in the patch and the script: the menu artwork
+and the ~4 MB of mp3 audio are dropped (the wallpaper is silent and has no UI), and the Draco
+decoder from `vendor/draco` is copied beside the scene because it decodes the GLB geometry.
 
 ## Scope of pull requests
 

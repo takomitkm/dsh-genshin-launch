@@ -83,11 +83,12 @@ npm run build:scene
 
 Copies `upstream/` to `.build/scene/`, applies `patches/*.patch`, installs dependencies, builds
 with Vite (`--base=./`), and replaces `public/genshin-bg/`. Requires Node 22+ and network access for
-the upstream dev dependencies.
+the upstream dev dependencies. The committed `patches/0001-loop-only.patch` is what turns the demo
+into this wallpaper, so a rebuild reproduces the shipped bundle.
 
-**Heads-up:** with an empty `patches/` this reproduces *upstream's own app* (menu, preloader, intro
-transitions), not the stripped loop-only backdrop shipped here. See [ROADMAP.md](ROADMAP.md) and
-the note in [NOTICE.md](NOTICE.md).
+`tsc` is skipped on purpose: the upstream snapshot's `src/core/components/ShaderTest.ts` imports a
+module that does not exist, so upstream's own `npm run build` fails at the type-check step while
+`vite build` succeeds.
 
 ## Known limitations
 
