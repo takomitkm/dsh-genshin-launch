@@ -1,0 +1,5 @@
+# Byte-exact assets: git must never normalise line endings in shipped scene
+# output or vendored decoders (the bundle embeds GLSL strings; CRLF removal
+# would change their contents).
+public/genshin-bg/** binary
+vendor/** binary
