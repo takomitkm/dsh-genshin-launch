@@ -54,8 +54,15 @@ Two round buttons sit in the bottom-right corner, at 35% opacity until hovered:
 | Setting | Effect | Default |
 | --- | --- | --- |
 | Show backdrop | Hides the scene layer entirely | on |
-| Panel frost | Opacity of the frost over the scene on the app panels | 55% |
-| Composer frost | Opacity of the frost on the composer input card | 75% |
+| Panel frost | Opacity of the frost over the scene on the app panels | 25% |
+| Composer frost | Opacity of the frost on the composer input card | 70% |
+| Quality | Auto / High / Low; Auto picks Low on a software renderer | Auto |
+
+**Quality.** `High` renders at the display's pixel ratio with bloom and FXAA. `Low` renders at half
+resolution and skips both passes, which is where a software rasteriser spends its time; tone mapping
+stays because it carries the look. `Auto` probes a throwaway canvas for the WebGL renderer string and
+chooses `Low` when it sees `Basic Render Driver` (Windows WARP), `SwiftShader` or `llvmpipe`. Changing
+the value reloads only the scene iframe.
 
 `Reset` restores the defaults. Values apply live (no reload, no restart) and persist per browser
 profile in `localStorage` under `dsh-genshin-launch:settings`. Earlier keys
