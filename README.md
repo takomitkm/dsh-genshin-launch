@@ -16,6 +16,10 @@ gamemcu). See [NOTICE.md](NOTICE.md) for exactly what is upstream's and what is 
   scene shows through behind the app instead of being covered by an opaque frame.
 - It also hides DSH's hero banner (the "探索未至之境 / preview" headline) and frosts the content
   panels so text stays legible over the scene.
+- **The wallpaper steps back once you start chatting.** DSH only renders the hero composer on an
+  empty conversation, so the plugin watches for it: sending the first message fades the scene out
+  over 900 ms, returns the shell to the theme's own background, and then stops the WebGL loop
+  entirely. Opening a new (empty) conversation fades it back in.
 
 ## Requirements
 
