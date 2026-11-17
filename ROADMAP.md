@@ -41,9 +41,24 @@ Note when proposing it: upstream's `npm run build` fails at `tsc` in this snapsh
 (`src/core/components/ShaderTest.ts` imports a module that does not exist), so `vite build` is run
 directly.
 
-## 3. Hash-independent shell selectors
+## 3. Hash-independent shell selectors — done
 
-`lib/client.js` targets DSH's shell by CSS class hash (`an3WzG_root`, `GRgSLq_card`,
-`WOwLGG_root`). Those hashes change when DSH rebuilds its web client. A more durable selector —
-for example matching on the composer's structural position or on a stable data attribute — would
-survive DSH upgrades without edits.
+DSH's class names are CSS modules: a per-build hash plus a stable semantic suffix. The first
+version hardcoded one build's hashes (`an3WzG_root`, `GRgSLq_card`, `WOwLGG_root`) and stopped
+working after a DSH update, whose shell painted `rgb(249, 250, 251)` over the whole viewport and
+hid the backdrop completely.
+
+`lib/client.js` now:
+
+- clears and frosts by suffix (`_frame`, `_sidebarCol`, `_centerCol`, `_mainPanel`), which survives
+  hash changes;
+- clears any `*_root` module inside those columns plus `*_emptyTabHost`, because a single DSH build
+  can mix packages compiled at different times (both `mP3x-q_*` and `an3WzG_*` were present at
+  once);
+- hides the hero banner structurally — climb from `*_headline` to the direct child of the
+  `*_composer*` stack — with a debounced `MutationObserver`, since the banner mounts after the
+  plugin runs;
+- restores the same suffix selectors when the backdrop is switched off.
+
+If a future DSH build drops the semantic suffixes entirely, this needs re-probing; the symptom is
+an opaque shell over a working scene.

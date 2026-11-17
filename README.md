@@ -92,10 +92,13 @@ module that does not exist, so upstream's own `npm run build` fails at the type-
 
 ## Known limitations
 
-- The shell selectors (`an3WzG_root`, `GRgSLq_card`, `WOwLGG_root`) are DSH's hashed class names.
-  A DSH update that reshuffles them needs the selectors re-probed (tracked in `ROADMAP.md`).
+- The shell override matches DSH's semantic class suffixes (`_frame`, `_sidebarCol`, `_centerCol`,
+  `_mainPanel`) rather than its per-build hashes, so ordinary DSH updates keep working. A build that
+  drops those suffixes would need re-probing; the symptom is an opaque shell hiding a working scene.
 - Chromium does not paint a hidden window, so the WebGL scene pauses whenever the app window is
   occluded or the session is disconnected. It resumes as soon as the window is visible.
+- Without a GPU the scene runs on Chromium's software rasteriser at roughly 13 fps. It still plays;
+  lower `--genshin-bg-panel` if you want the wallpaper to read more strongly.
 - The backdrop is decorative: it never receives pointer events.
 
 ## License
