@@ -30,8 +30,12 @@ hidden window, which is expected behaviour, not a scene fault.
 ## 2. Upstream pull request
 
 The same change, limited to `src/**` plus `index.html`, is a reasonable upstream proposal: it adds
-a "no UI, loop forever" mode to the demo. It is prepared on a branch in the fork
-(<https://github.com/takomitkm/www-genshin>) so the diff stays inside upstream's own files.
+a "no UI, loop forever" mode to the demo.
+
+It is already committed on the fork's `main` (<https://github.com/takomitkm/www-genshin>, commit
+`d7775a8`), not on a side branch, so the fork's `main` is upstream `main` plus exactly this change:
+`compare/main...takomitkm:main` reports ahead 1 / behind 0 across the seven files listed above.
+Opening a pull request therefore needs no extra preparation — the head is `takomitkm:main`.
 
 Note when proposing it: upstream's `npm run build` fails at `tsc` in this snapshot
 (`src/core/components/ShaderTest.ts` imports a module that does not exist), so `vite build` is run
