@@ -1,0 +1,4 @@
+# Add the Genshin ambient backdrop plugin to the DSH web client roster.
+- insert:
+    - id: genshin-launch
+      name: '@takomitkm/dsh-genshin-launch'

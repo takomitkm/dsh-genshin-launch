@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "Genshin launch wallpaper",
+    "description": "Plays the Genshin Impact login scene as a fixed, non-interactive wallpaper behind the DSH desktop client, with a settings panel for the backdrop and the frost strength of the app panels. Every scene asset ships inside the plugin and is served offline, so the wallpaper needs no network.",
+    "detail": "docs/DETAIL.md"
+  }
+}

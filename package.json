@@ -1,0 +1,51 @@
+{
+  "name": "@takomitkm/dsh-genshin-launch",
+  "version": "0.2.0",
+  "description": "Genshin Impact login-scene wallpaper for the DeepSeek Harness (DSH) desktop client, with in-page settings.",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/takomitkm/dsh-genshin-launch.git"
+  },
+  "homepage": "https://github.com/takomitkm/dsh-genshin-launch#readme",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "dsh": {
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": []
+    },
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "scripts": {
+    "build:scene": "node scripts/build-scene.mjs"
+  },
+  "files": [
+    "lib/index.js",
+    "lib/client.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "docs",
+    "public/genshin-bg/**/*",
+    "vendor/draco/**/*",
+    "scripts/build-scene.mjs",
+    "patches",
+    "README.md",
+    "NOTICE.md",
+    "ROADMAP.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=22"
+  }
+}
