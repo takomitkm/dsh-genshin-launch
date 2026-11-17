@@ -18,7 +18,7 @@ gamemcu). See [NOTICE.md](NOTICE.md) for exactly what is upstream's and what is 
   panels so text stays legible over the scene.
 - **The wallpaper steps back once you start chatting.** DSH only renders the hero composer on an
   empty conversation, so the plugin watches for it: sending the first message fades the scene out
-  over 900 ms, returns the shell to the theme's own background, and then stops the WebGL loop
+  over 2.7 s, returns the shell to the theme's own background, and then stops the WebGL loop
   entirely. Opening a new (empty) conversation fades it back in.
 
 ## Requirements
