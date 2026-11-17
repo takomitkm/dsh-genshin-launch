@@ -1,0 +1,40 @@
+diff --git a/src/core/Game.ts b/src/core/Game.ts
+index be6573a..0e21863 100644
+--- a/src/core/Game.ts
++++ b/src/core/Game.ts
+@@ -46,6 +46,13 @@ resizeWindow()
+ var evt = "resize";//"onorientationchange" in window ? "orientationchange" : "resize";
+ window.addEventListener(evt, resizeWindow, false);
+ 
++/**
++ * Scene quality, chosen by the embedding plugin via `?quality=low`.
++ * "low" is meant for machines without a usable GPU (software WebGL).
++ */
++export const quality: "low" | "high" =
++    new URLSearchParams(location.search).get("quality") === "low" ? "low" : "high";
++
+ 
+ export class Game {
+     public viewer!: Viewer;
+@@ -122,9 +129,17 @@ class StateGame extends StateHandler<Game> {
+         viewer.addNode(Road);
+ 
+         viewer.addPlugin(gradientBackgroundPlugin);
+-        viewer.addPlugin(FXAAPlugin)
+-        viewer.addPlugin(BloomPlugin, { mipmapBlur: true, luminanceThreshold: 2, intensity: 0.6 });
+-
+-        viewer.addPlugin(ToneMappingPlugin, { mode: ToneMappingMode.ACES_FILMIC });
++        // Quality switch. `?quality=low` targets machines without a usable GPU,
++        // where WebGL runs on Chromium's software rasteriser (D3D11 WARP): bloom and
++        // FXAA are extra full-screen passes, and the pixel ratio costs 4x fill rate.
++        // Tone mapping stays — it is one pass and removing it changes the look.
++        if (quality === "low") {
++            viewer.renderer.setPixelRatio(0.5);
++            viewer.addPlugin(ToneMappingPlugin, { mode: ToneMappingMode.ACES_FILMIC });
++        } else {
++            viewer.addPlugin(FXAAPlugin)
++            viewer.addPlugin(BloomPlugin, { mipmapBlur: true, luminanceThreshold: 2, intensity: 0.6 });
++            viewer.addPlugin(ToneMappingPlugin, { mode: ToneMappingMode.ACES_FILMIC });
++        }
+     }
+ }
