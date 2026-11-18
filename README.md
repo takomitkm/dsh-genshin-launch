@@ -1,6 +1,6 @@
 # dsh-genshin-launch
 
-![Uploading image.png…]()
+<img width="828" height="534" alt="屏幕截图 2026-11-17 221646" src="https://github.com/user-attachments/assets/a40db250-f424-4207-a67e-bfaab21910f5" />
 
 A Genshin Impact login-scene wallpaper for the **DeepSeek Harness (DSH)** desktop client: the
 scene plays behind the app as a fixed, non-interactive layer, with a small settings panel for the
